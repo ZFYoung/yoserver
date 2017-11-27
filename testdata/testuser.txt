@@ -1,0 +1,11 @@
+[{
+"USERID":"1",
+"USERNAME":"junk",
+"USERPWD":"111111",
+"AVATAR":"http://www.baidu.com"
+},{
+"USERID":"2",
+"USERNAME":"lina",
+"USERPWD":"111111",
+"AVATAR":"http://www.baidu.com"
+}]
