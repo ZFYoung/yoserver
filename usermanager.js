@@ -60,3 +60,4 @@ var getUser = function(uid,callback){
 
 exports.checkUser = checkUser;
 exports.getUser = getUser;
+exports.getAllUsers = getAllUsers;

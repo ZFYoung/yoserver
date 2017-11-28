@@ -1,4 +1,4 @@
-var usrsys = require('./usermanager')
+var usermanager = require('./usermanager')
 var http = require('http')
 var querystring = require('querystring')
 var url = require('url')
@@ -23,11 +23,11 @@ var server = http.createServer(function(req,res){
 			}
 
 			if (req_usr.uid.length > 0 && req_usr.upwd.length > 0) {
-				usrsys.checkUser(req_usr.uid,req_usr.upwd,function(result){
+				usermanager.checkUser(req_usr.uid,req_usr.upwd,function(result){
 					console.log('auth result ===========' + result);
 					if (result === true) {
-						res.writeHead(200,{'Content-Type':'application/json'});
-						usrsys.getUser(parseInt(req_usr.uid),function(user){
+						res.writeHead(200,{'Content-Type':'text/plain'});
+						usermanager.getUser(parseInt(req_usr.uid),function(user){
 							if (user) {
 								res.write(JSON.stringify({'retCode':'1',"USER":JSON.stringify(user)}));
 								res.end();
@@ -35,17 +35,23 @@ var server = http.createServer(function(req,res){
 						});
 
 					} else {
-						res.writeHead(200,{'Content-Type':'application/json'});
+						res.writeHead(200,{'Content-Type':'text/plain'});
 						res.write(JSON.stringify({'retCode':'1'}));
 						res.end();
 					}
 				})
 			} else {
-				res.writeHead(200,{'Content-Type':'application/json'});
+				res.writeHead(200,{'Content-Type':'text/plain'});
 				res.write(JSON.stringify({'retCode':'1'}));
 				res.end();
 			}
 		});
+	} else if(pathname == '/getallusers') {
+		usermanager.getAllUsers(function(allusers){
+			res.writeHead(200,{'Content-Type':'text/plain'});
+			res.write(JSON.stringify({'retCode':'1',"ALLUSERS":JSON.stringify(allusers)}));
+			res.end();
+		})
 	}
 }).listen(3000);
 
