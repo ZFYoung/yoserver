@@ -1,11 +1,11 @@
 [{
 "USERID":"1",
-"USERNAME":"junk",
+"USERNAME":"ZFYOUNG",
 "USERPWD":"111111",
 "AVATAR":"http://img.25pp.com/uploadfile/app/icon/20160205/1454651232657016.jpg"
 },{
 "USERID":"2",
-"USERNAME":"lina",
+"USERNAME":"YECC",
 "USERPWD":"111111",
-"AVATAR":"http://img.25pp.com/uploadfile/app/icon/20160205/1454651232657016.jpg"
+"AVATAR":"http://pic.cnblogs.com/face/828819/20151028142207.png"
 }]

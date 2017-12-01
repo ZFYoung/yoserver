@@ -6,7 +6,6 @@ var url = require('url')
 var server = http.createServer(function(req,res){
 
 	var pathname = url.parse(req.url).pathname;
-	console.log(pathname)
 
 	if (pathname == '/postlogin') {
 		var postData = '';
@@ -15,34 +14,31 @@ var server = http.createServer(function(req,res){
 		});
 		
 		req.on('end',function(){
-			console.log('receive login data ===========' +postData);
+			console.log('receive path====== ' + pathname + ' ======data ===========' +postData);
 			
-			var req_usr = querystring.parse(postData);
-			if(postData && postData.indexOf('&')<0){
-				req_usr = JSON.parse(postData);
+			var requser = querystring.parse(postData);
+			if(postData && postData.indexOf('&') < 0) {
+				requser = JSON.parse(postData);
+			} else {
+				requser = querystring.parse(postData);
 			}
 
-			if (req_usr.uid.length > 0 && req_usr.upwd.length > 0) {
-				usermanager.checkUser(req_usr.uid,req_usr.upwd,function(result){
+			if (requser.uname.length > 0 && requser.upwd.length > 0) {
+				usermanager.checkUser(requser.uname,requser.upwd,function(result, respUser){
 					console.log('auth result ===========' + result);
 					if (result === true) {
 						res.writeHead(200,{'Content-Type':'text/plain'});
-						usermanager.getUser(parseInt(req_usr.uid),function(user){
-							if (user) {
-								res.write(JSON.stringify({'retCode':'1',"USER":JSON.stringify(user)}));
-								res.end();
-							};
-						});
-
+						res.write(JSON.stringify({'retCode':'1',"USER":JSON.stringify(respUser)}));
+						res.end();
 					} else {
 						res.writeHead(200,{'Content-Type':'text/plain'});
-						res.write(JSON.stringify({'retCode':'1'}));
+						res.write(JSON.stringify({'retCode':'0','USER':""}));
 						res.end();
 					}
 				})
 			} else {
 				res.writeHead(200,{'Content-Type':'text/plain'});
-				res.write(JSON.stringify({'retCode':'1'}));
+				res.write(JSON.stringify({'retCode':'0','USER':""}));
 				res.end();
 			}
 		});

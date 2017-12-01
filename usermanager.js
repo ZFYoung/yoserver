@@ -1,63 +1,35 @@
 var fs = require('fs')
 var path = require('path')
+var mongo = require('./mongoManager')
 
 var usrdbpath = path.join(__dirname,'testdata/testuser.txt')
 var getAllUsers = function(callback){
-	fs.stat(usrdbpath,function(err,stats){
-		if (err){
-			console.log('file path error====' + usrdbpath);
-		} else {
-			if (stats.isFile()){
-				var fileStream = fs.createReadStream(usrdbpath);
-				fileStream.on('error',function(err){
-					console.log('file read error');
-				})
-				
-				fileStream.on('data',function(data){
-					var allusr = data.toString();
-					return callback(JSON.parse(allusr));
-				})
-			}
-		}
+
+	mongo.selectData('usertb', function(result){
+		callback(result);
 	})
 }
 
-var checkUser = function(uid,upwd,callback){
-	getAllUsers(function(allusrModel){
-		if (allusrModel.length <= 0) {
-			return callback(false);
-		} 
-		
-		for (var i = allusrModel.length-1; i >= 0; i--){
-			var usr = allusrModel[i];
-			if (usr.USERID == uid && usr.USERPWD == upwd){
-				console.log('login succeed');
-				return callback(true);
-			}
+var checkUser = function(uname, upwd, callback){
+
+	var condition = {'username':uname, 'userpwd':upwd};
+	mongo.selectDataWithCondition('usertb', condition, function(result) {
+		if (result.length > 0) {
+			callback(true, result[0])
+		} else {
+			callback(false, null)
 		}
-		return callback(false);
-	});
+	})
 };
 
-var getUser = function(uid,callback){
-	if (uid > 0){
-		getAllUsers(function(allusrModel){
-			if (allusrModel.length <= 0) {
-				return callback(null);
-			} 
-			
-			for (var i = allusrModel.length-1; i >= 0; i--){
-				var usr = allusrModel[i];
-				if (usr.USERID == uid){
-					console.log('catch user success');
-					return callback(usr);
-				}
-			}
-			return callback(null);
-		})
-	};
+var getUserWithId = function(uid,callback){
+
+	var condition = {'_id':uid};
+	mongo.selectDataWithCondition('usertb', condition, function(result) {
+		callback(result);
+	})
 }
 
 exports.checkUser = checkUser;
-exports.getUser = getUser;
+exports.getUserWithId = getUserWithId;
 exports.getAllUsers = getAllUsers;
