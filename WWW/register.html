@@ -1,1 +1,78 @@
-register
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<title>Yoserver</title>
+ 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/login_style.css" />
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+
+		<script type="text/javascript">
+
+			$(function() {
+				function registerClicked(){
+					var uname = document.querySelector('#username4Inner').value
+					var upwd = document.querySelector('#password4Inner').value
+					var uavatar = document.querySelector('#avatar4Inner').value
+					var oneword = document.querySelector('#oneword4Inner').value
+					$.ajax({
+						url: 'http://192.168.2.200:3000/postregister',
+						type:"POST",
+						data:{"username":uname,"userpwd":upwd,"useravatar":uavatar,"useroneword":oneword},
+						dataType:"json",
+						success:function(data){
+							if(data.success){
+								$.messager.alert('鎻愮ず', '鍔ㄦ€佸瘑鐮佸凡鍙戦€佽嚦浣犻偖绠憋紝璇锋煡鏀�');
+								$('#password4Inner').focus();
+							}else{
+								$.messager.alert('閿欒', '鑾峰彇鍔ㄦ€佸瘑鐮佸け璐ワ紝璇风◢鍚庡啀璇�');
+							}
+						}
+					});
+				}
+
+
+				window.registerClicked = registerClicked;
+			})
+		</script>
+  	</head>
+
+	<body class="body_bg">
+
+		<div class="login_win">
+				
+			<div class="login_input">
+				<form action="http://192.168.2.200:3000/postregister" name="loginForm" method="post">
+					<div id="div_1">
+
+						<input style="width: 200px;" type="text" id="username4Inner" name="username" placeholder="请输入用户名" />
+						
+						<input  style="width: 200px;" type="password" id="password4Inner" name="userpwd" placeholder="请输入密码"/>
+						
+						<input  style="width: 200px;" type="text" id="avatar4Inner" name="useravatar" placeholder="请输入头像地址"/>
+						
+						<input  style="width: 200px;" type="text" id="oneword4Inner" name="useroneword" placeholder="说句话吧 随意~"/>
+
+					</div>
+					<br/>
+					<div>
+						<!-- <select id="user_type" name="user_type">
+							<option value="1">内部员工</option>
+							<option value="2">外部客户</option>
+						</select> -->
+						<!-- <button type="button" style="width: 112px;height: 50px" onclick="registerClicked()">注册</button> -->
+						<button type="button" onclick="registerClicked()">修改内容</button>
+<!-- 						<input type="submit" value="Submit" />
+ -->
+					</div>
+					<div style="height: 45px;">&nbsp;</div>
+				</form>
+			</div>
+			<iframe style="display: none" id="certiLogin"></iframe>
+		</div>
+	</body>
+</html>
